@@ -71,8 +71,8 @@ connectMongoDB();
 // });
 // what's the difference between the above codes?
 
-app.use("/user", usersRouter);
-app.use("/traffic", trafficRouter);
+// app.use("/user", usersRouter);
+// app.use("/traffic", trafficRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to PhvRadar");
