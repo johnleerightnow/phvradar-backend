@@ -64,6 +64,38 @@ const controller = {
       })
       .catch((err) => console.log("Err", err));
   },
+  googlesignin:async(req,res)=>{
+    const email=req.body.email.toLowerCase();
+    const user=await UserModel.findOne({email})
+    if(!user){
+      const dataToDB = {
+        name:req.body.name,
+        email,
+        googleSignIn:true,
+        salt:'',
+        hash:''
+
+      };
+     await UserModel.create(dataToDB)
+    }
+     const token = jwt.sign(
+      {
+        name: req.body.name,
+        email,
+      },
+      jwtSecret,
+      {
+        algorithm: "HS384",
+      }
+    );
+
+    const decodedJWT = jwt.decode(token);
+    res.send({
+      success: true,
+      token: token,
+      expiresAt: decodedJWT.exp,
+    });
+  },
   signin: (req, res) => {
     const email = req.body.email.toLowerCase();
     UserModel.findOne({ email: email })

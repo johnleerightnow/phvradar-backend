@@ -14,13 +14,15 @@ const userSchema = new mongoose.Schema({
   },
   salt: {
     type: String,
-    required: true,
   },
   hash: {
     type: String,
-    required: true,
   },
- 
+  googleSignIn:{
+   type:Boolean,
+   default:false
+
+  },
   created_at: {
     type: Date,
     required: true,
