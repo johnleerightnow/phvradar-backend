@@ -24,8 +24,8 @@ app.use(
 async function connectMongoDB() {
   try {
     await mongoose.connect(
-      `mongodb://127.0.0.1:27017/trafficDB`,
-      // `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+      // `mongodb://127.0.0.1:27017/trafficDB`,
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
