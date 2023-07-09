@@ -59,6 +59,7 @@ app.post("/api/v1/signin", userController.signin);
 app.post("/api/v1/userprofile", userController.userprofile);
 app.post("/api/v1/updateprofile", userController.updateprofile);
 app.post("/api/v1/googlesignin",userController.googlesignin)
+app.get("/api/v1/getmyerplocations",userController.getmyerplocations)
 app.listen(port, () => {
   console.log(`phv radar listening on port ${port}`);
 });

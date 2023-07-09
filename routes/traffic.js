@@ -7,11 +7,13 @@ router.get("/updateErpRates", trafficController.updateErpRates);
 
 router.get("/findRateForGantry", trafficController.findRateForGantry);
 
+router.post("/storelocationandprice",trafficController.storeLocationAndPrice)
+
 router.get("/allGantryPositions", trafficController.allGantryPositions);
 
 router.post("/findNameOfGantry", trafficController.findNameOfGantry);
 
-router.get("/test", trafficController.test);
+// router.get("/test", trafficController.test);
 
 cron.schedule(
   "1 01 * * *",

@@ -195,6 +195,18 @@ const controller = {
     }
   },
 
+  getmyerplocations:async(req,res)=>{
+    try{
+     const result= await UserModel.findOne({_id:"64aa68d9a8ea139fb1b82141"})
+     let locations=result.locations;
+     const sortedLocations = locations.sort((a, b) => new Date(b.time) - new Date(a.time));
+     res.json({locations:sortedLocations})
+    }
+    catch(e){
+     res.json({error:true})
+    }
+  }
+
 };
 
 module.exports = controller;
