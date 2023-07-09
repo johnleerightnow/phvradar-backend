@@ -20,12 +20,10 @@ app.use(
   })
 );
 
-
 async function connectMongoDB() {
   try {
     await mongoose.connect(
-      `mongodb://127.0.0.1:27017/trafficDB`,
-      // `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -52,7 +50,7 @@ app.post("/api/v1/checkemail", userController.checkemail);
 app.post("/api/v1/signin", userController.signin);
 app.post("/api/v1/userprofile", userController.userprofile);
 app.post("/api/v1/updateprofile", userController.updateprofile);
-app.post("/api/v1/googlesignin",userController.googlesignin)
+app.post("/api/v1/googlesignin", userController.googlesignin);
 app.listen(port, () => {
   console.log(`phv radar listening on port ${port}`);
 });
