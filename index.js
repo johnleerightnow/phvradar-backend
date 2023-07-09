@@ -8,6 +8,10 @@ const userController = require("./controllers/userController");
 const port = process.env.PORT || 1777;
 const cookieParser = require("cookie-parser");
 const { UI_ROOT_URI } = require("./config");
+//const usersRouter = require("./routes/users");
+const trafficRouter = require("./routes/traffic");
+const ErpLocationModel = require("./models/erplocations");
+const ErpDescriptionModel = require("./models/erpdescriptions");
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,6 +45,8 @@ async function connectMongoDB() {
 
 connectMongoDB();
 
+//app.use("/user", usersRouter);
+app.use("/traffic", trafficRouter);
 app.get("/", (req, res) => {
   res.send("Welcome to PhvRadar");
 });

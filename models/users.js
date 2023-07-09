@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const locationSchema = new mongoose.Schema({
+  location:String,
+  rate:Number,
+  time: Date,
+  // Other location fields
+});
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -23,6 +30,7 @@ const userSchema = new mongoose.Schema({
    default:false
 
   },
+  locations:[locationSchema],
   created_at: {
     type: Date,
     required: true,
