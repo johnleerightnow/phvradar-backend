@@ -67,6 +67,7 @@ const controller = {
   googlesignin:async(req,res)=>{
     const email=req.body.email.toLowerCase();
     const user=await UserModel.findOne({email})
+    let newUser;
     if(!user){
       const dataToDB = {
         name:req.body.name,
@@ -76,10 +77,11 @@ const controller = {
         hash:''
 
       };
-     await UserModel.create(dataToDB)
+     newUser=await UserModel.create(dataToDB)
     }
      const token = jwt.sign(
       {
+        _id:!user?newUser._id:user._id,
         name: req.body.name,
         email,
       },
@@ -118,6 +120,7 @@ const controller = {
         }
         const token = jwt.sign(
           {
+            _id:result._id,
             name: result.name,
             email: result.email,
           },
@@ -194,6 +197,21 @@ const controller = {
         });
     }
   },
+
+  getmyerplocations:async(req,res)=>{
+    try{
+      const {token}=req.body;
+      const decodedJWT=jwt.decode(token)
+    
+     const result= await UserModel.findOne({_id:decodedJWT._id})
+     let locations=result.locations;
+     const sortedLocations = locations.sort((a, b) => new Date(b.time) - new Date(a.time));
+     res.json({locations:sortedLocations})
+    }
+    catch(e){
+     res.json({error:true})
+    }
+  }
 
 };
 
