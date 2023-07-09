@@ -3,6 +3,9 @@ const ErpRatesModel = require("../models/erprates");
 const ErpLocationModel = require("../models/erplocations");
 const ErpDescriptionModel = require("../models/erpdescriptions");
 const UserModel=require("../models/users")
+const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.JWT_SECRET;
+
 
 const controller = {
   updateErpRates: async (req, res) => {
@@ -79,7 +82,6 @@ const controller = {
           },
         },
       ]);
-      console.log(dbresult);
       res.status(200).send(dbresult);
     } catch (error) {
       // Handle any errors that occur during the query
@@ -89,7 +91,10 @@ const controller = {
   },
   storeLocationAndPrice: async (req, res) => {
     try {
-      const {corLink,userId}=req.body;
+      const {corLink,token}=req.body;
+      console.log(token)
+      const decodedJWT = jwt.verify(token, jwtSecret);
+      console.log(decodedJWT)
       const time=new Date()
       const dateObj = new Date(time);
       const options = { hour: 'numeric', minute: 'numeric', hour12:false };
@@ -130,7 +135,7 @@ const controller = {
 
 
       await UserModel.findOneAndUpdate(
-        { _id: "64aa68d9a8ea139fb1b82141" }, // Replace with the actual document ID or the condition to match the document
+        { _id: decodedJWT._id },
         { $push: { locations: { location: result[0].ERPGantryLocation, rate: result[0].collection2Data[0].ChargeAmount ,time} } }, // Add the new location using $push
         { new: true } // Specify `new: true` to return the updated document
       )
