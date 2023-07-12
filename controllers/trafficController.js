@@ -91,7 +91,7 @@ const controller = {
   },
   storeLocationAndPrice: async (req, res) => {
     try {
-      const {corLink,token}=req.body;
+      const {corLink,token, dayOfWeek}=req.body;
       console.log(token)
       const decodedJWT = jwt.verify(token, jwtSecret);
       console.log(decodedJWT)
@@ -100,6 +100,9 @@ const controller = {
       const options = { hour: 'numeric', minute: 'numeric', hour12:false };
       const formattedTime = dateObj.toLocaleString('en-US', options);
       console.log(formattedTime)
+
+      let dayType = dayOfWeek === 6 ? 'Saturday' : 'Weekdays' 
+
       const result = await ErpDescriptionModel.aggregate([
         {
           $match: {
@@ -126,20 +129,21 @@ const controller = {
         const endTimeMinutes = getTimeInMinutes(item.EndTime);
         const currentTimeMinutes = getTimeInMinutes(formattedTime);
         const isTimeInRange= startTimeMinutes <= currentTimeMinutes && currentTimeMinutes <= endTimeMinutes;
-        const isVehicleTypeTaxis = item.VehicleType === 'Taxis';
-        return isTimeInRange && isVehicleTypeTaxis;
+        const isVehicleTypeTaxis = item.VehicleType === 'Passenger Cars/Light Goods Vehicles/Taxis';
+        const isDayType = item.DayType === dayType
+        return isTimeInRange && isVehicleTypeTaxis && isDayType;
+      }).filter(Boolean);
 
-      });
-      console.log(filteredData)
-
-
-
-      await UserModel.findOneAndUpdate(
-        { _id: decodedJWT._id },
-        { $push: { locations: { location: result[0].ERPGantryLocation, rate: result[0].collection2Data[0].ChargeAmount ,time} } }, // Add the new location using $push
-        { new: true } // Specify `new: true` to return the updated document
-      )
-      res.json({location:result[0].ERPGantryLocation, price:filteredData.length>0?filteredData[0].ChargeAmount:null, time})
+      if(filteredData && Array.isArray(filteredData) && filteredData.length > 0){
+        await UserModel.findOneAndUpdate(
+          { _id: decodedJWT._id },
+          { $push: { locations: { location: result[0].ERPGantryLocation, rate: filteredData[0].ChargeAmount ,time} } }, // Add the new location using $push
+          { new: true } // Specify `new: true` to return the updated document
+        )
+        res.json({location:result[0].ERPGantryLocation, price:filteredData, status:1})
+      }else{
+        throw `No Price Found`
+      }
     } catch (error) {
       // Handle the error
       console.error(error);
