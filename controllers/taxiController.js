@@ -3,7 +3,7 @@ const TaxisAvailable = require("../models/taxisAvailable");
 
 const controller = {
   getTaxisNearBy: async (req, res) => {
-    res.status(200).send("taxi available sync in progress");
+    res.send("taxi available sync in progress");
     let result = await fetchTaxiAvailable();
     try {
       await TaxisAvailable.collection.drop().then((drpres) => {
@@ -18,7 +18,7 @@ const controller = {
   },
   getTaxiAvailableCount: async (req, res) => {
     let result = await TaxisAvailable.count();
-    res.status(200).send({ message: "success", data: result, status: 1 });
+    res.send({ message: "success", data: result, status: 1 });
   },
 };
 

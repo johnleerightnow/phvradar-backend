@@ -14,8 +14,8 @@ router.get("/allGantryPositions", trafficController.allGantryPositions);
 router.post("/findNameOfGantry", trafficController.findNameOfGantry);
 
 router.get(
-  "/getTrafficIncidentsCount",
-  trafficController.getTrafficIncidentsCount
+  "/getTrafficIncidents",
+  trafficController.getTrafficIncidents
 );
 
 router.get("/test", trafficController.updateTrafficIncidents);

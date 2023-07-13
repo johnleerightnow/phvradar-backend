@@ -197,7 +197,6 @@ const controller = {
         });
     }
   },
-
   getmyerplocations:async(req,res)=>{
     try{
       const {token}=req.body;
@@ -212,7 +211,6 @@ const controller = {
      res.json({error:true})
     }
   }
-
 };
 
 module.exports = controller;

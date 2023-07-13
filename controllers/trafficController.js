@@ -21,12 +21,12 @@ const controller = {
     } catch (error) {
       console.log("updateErpRates api", error);
     }
-    // res.status(200).send("Result succesfully insert into DB");
+    // res.send("Result succesfully insert into DB");
   },
   findRateForGantry: async (req, res) => {
     const result = await ErpRatesModel.find({ ZoneID: "AY1" });
     console.log(result);
-    res.status(200).send(result);
+    res.send(result);
   },
 
   allGantryPositions: async (req, res) => {
@@ -41,9 +41,8 @@ const controller = {
           rightlong: e.rightlongitude,
         };
       });
-      console.log("allGantriesPosition requested");
 
-      res.status(200).send(filterResults);
+      res.send(filterResults);
     } catch (error) {
       console.log("allGantriesPositon api", error);
     }
@@ -82,7 +81,7 @@ const controller = {
           },
         },
       ]);
-      res.status(200).send(dbresult);
+      res.send(dbresult);
     } catch (error) {
       // Handle any errors that occur during the query
       console.error(error);
@@ -172,7 +171,7 @@ const controller = {
     }
   },
   updateTrafficIncidents: async (req, res) => {
-    res.status(200).send("traffic incidents sync in progress");
+    res.send("traffic incidents sync in progress");
     let result = await fetchTrafficIncidents();
     try {
       await TrafficIncidents.collection.drop().then((drpres) => {
@@ -185,7 +184,7 @@ const controller = {
       console.log("updateErpRates api", error);
     }
   },
-  getTrafficIncidentsCount: async (req, res) => {
+  getTrafficIncidents: async (req, res) => {
     let result = await TrafficIncidents.aggregate([
       {
         $match: { Type: "Accident" },
@@ -200,7 +199,7 @@ const controller = {
         },
       },
     ]);
-    res.status(200).send({ message: "success", data: result, status: 1 });
+    res.send({ message: "success", data: result, status: 1 });
   },
 };
 

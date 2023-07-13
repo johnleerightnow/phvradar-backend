@@ -8,7 +8,7 @@ const userController = require("./controllers/userController");
 const port = process.env.PORT || 1777;
 const cookieParser = require("cookie-parser");
 const { UI_ROOT_URI } = require("./config");
-//const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/users");
 const trafficRouter = require("./routes/traffic");
 const taxiRouter = require("./routes/taxis");
 app.use(cookieParser());
@@ -44,20 +44,14 @@ async function connectMongoDB() {
 
 connectMongoDB();
 
-//app.use("/user", usersRouter);
+app.use("/user", usersRouter);
 app.use("/traffic", trafficRouter);
 app.use("/taxi", taxiRouter);
 app.get("/", (req, res) => {
   res.send("Welcome to PhvRadar");
 });
 
-app.post("/api/v1/signup", userController.signup);
-app.post("/api/v1/checkemail", userController.checkemail);
-app.post("/api/v1/signin", userController.signin);
-app.post("/api/v1/userprofile", userController.userprofile);
-app.post("/api/v1/updateprofile", userController.updateprofile);
-app.post("/api/v1/googlesignin", userController.googlesignin);
-app.post("/api/v1/getmyerplocations", userController.getmyerplocations);
+
 app.listen(port, () => {
   console.log(`phv radar listening on port ${port}`);
 });
