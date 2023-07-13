@@ -29,6 +29,64 @@ const api = {
     }
     return await getRates();
   },
+  fetchTrafficIncidents: async () => {
+    /* How to keep trying using ?$skip=500 until there is no more results and then return */
+    // Start with a for loop? or a ternary operator?
+    // If result exists then try again with request + ?$skip=500
+    let arr = [];
+    async function getTrafficIncidents(count) {
+      count !== undefined ? count : (count = 0);
+      try {
+        let result = await axios.get(
+          `http://datamall2.mytransport.sg/ltaodataservice/TrafficIncidents?$skip=${count}`,
+          {
+            headers: {
+              AccountKey: process.env.DATAMALL_API_PASS,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (result.data.value.length > 0) {
+          count += 500;
+          arr.push(...result.data.value);
+          await getTrafficIncidents(count);
+        }
+      } catch (error) {
+        console.error("erpRates Api error", error);
+      }
+      return arr;
+    }
+    return await getTrafficIncidents();
+  },
+  fetchTaxiAvailable: async () => {
+    /* How to keep trying using ?$skip=500 until there is no more results and then return */
+    // Start with a for loop? or a ternary operator?
+    // If result exists then try again with request + ?$skip=500
+    let arr = [];
+    async function getTaxis(count) {
+      count !== undefined ? count : (count = 0);
+      try {
+        let result = await axios.get(
+          `http://datamall2.mytransport.sg/ltaodataservice/Taxi-Availability?$skip=${count}`,
+          {
+            headers: {
+              AccountKey: process.env.DATAMALL_API_PASS,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (result.data.value.length > 0) {
+          count += 500;
+          arr.push(...result.data.value);
+          await getTaxis(count);
+        }
+      } catch (error) {
+        console.error("erpRates Api error", error);
+      }
+      return arr;
+    }
+    return await getTaxis();
+  }
 };
 
 module.exports = api;

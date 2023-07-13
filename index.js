@@ -10,8 +10,7 @@ const cookieParser = require("cookie-parser");
 const { UI_ROOT_URI } = require("./config");
 //const usersRouter = require("./routes/users");
 const trafficRouter = require("./routes/traffic");
-const ErpLocationModel = require("./models/erplocations");
-const ErpDescriptionModel = require("./models/erpdescriptions");
+const taxiRouter = require("./routes/taxis");
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,6 +46,7 @@ connectMongoDB();
 
 //app.use("/user", usersRouter);
 app.use("/traffic", trafficRouter);
+app.use("/taxi", taxiRouter);
 app.get("/", (req, res) => {
   res.send("Welcome to PhvRadar");
 });
