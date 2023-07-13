@@ -3,7 +3,6 @@ const TaxisAvailable = require("../models/taxisAvailable");
 
 const controller = {
   getTaxisNearBy: async (req, res) => {
-    res.send("taxi available sync in progress");
     let result = await fetchTaxiAvailable();
     try {
       await TaxisAvailable.collection.drop().then((drpres) => {
@@ -15,6 +14,7 @@ const controller = {
     } catch (error) {
       console.log("updateErpRates api", error);
     }
+    return
   },
   getTaxiAvailableCount: async (req, res) => {
     let result = await TaxisAvailable.count();

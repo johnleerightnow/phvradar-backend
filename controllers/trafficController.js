@@ -171,7 +171,6 @@ const controller = {
     }
   },
   updateTrafficIncidents: async (req, res) => {
-    res.send("traffic incidents sync in progress");
     let result = await fetchTrafficIncidents();
     try {
       await TrafficIncidents.collection.drop().then((drpres) => {
@@ -183,6 +182,7 @@ const controller = {
     } catch (error) {
       console.log("updateErpRates api", error);
     }
+    return
   },
   getTrafficIncidents: async (req, res) => {
     let result = await TrafficIncidents.aggregate([
